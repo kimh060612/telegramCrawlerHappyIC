@@ -15,7 +15,7 @@ class ChannelRepository(AbstractRepository):
     def insertChannel(self, channel: ChannelEntity):
         try:
             c = self.conn.cursor()
-            c.execute('INSERT INTO channels(channel_id, channel_name, channel_status) VALUES({}, {}, {})'.format(
+            c.execute('INSERT INTO channels(channel_id, channel_name, channel_status) VALUES("{}", "{}", "{}")'.format(
                 channel.channel_id,
                 channel.channel_name,
                 channel.channel_status
