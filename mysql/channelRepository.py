@@ -1,5 +1,5 @@
-from service import AbstractRepository, StoreException
-from channelEntity import ChannelEntity
+from .service import AbstractRepository, StoreException
+from .channelEntity import ChannelEntity
 
 class ChannelRepository(AbstractRepository):
     def __init__(self, host, port, username, password, db):

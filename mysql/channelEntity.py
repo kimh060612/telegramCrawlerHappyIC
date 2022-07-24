@@ -1,5 +1,3 @@
-import pymysql
-
 class ChannelEntity:
     def __init__(self, 
                  channel_name,
