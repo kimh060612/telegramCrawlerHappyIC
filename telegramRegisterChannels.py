@@ -50,8 +50,11 @@ async def main():
         async for entity in client.iter_dialogs(offset_date=None,
                                                 offset_id=0,
                                                 offset_peer=InputPeerEmpty()):
-            print('{:>14}: {}'.format(entity.id, entity.title))
-            cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "Y"))
+            try:
+                cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "Y"))
+                print('{:>14}: {} save success!'.format(entity.id, entity.title))
+            except:
+                print('{:>14}: {} save failed!'.format(entity.id, entity.title))
 
 if __name__ == "__main__":
     client.loop.run_until_complete(main())
