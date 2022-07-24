@@ -23,12 +23,12 @@ class ChannelRepository(AbstractRepository):
         except Exception as e:
             raise StoreException('error inserting channel')
     
-    def migrateChannel(self):
+    def migrateChannel(self, table_name):
         try:
             c = self.conn.cursor()
-            c.execute('CREATE TABLE channels( channel_id varchar(100) not null primary key, \
+            c.execute('CREATE TABLE {}( channel_id varchar(100) not null primary key, \
                                               channel_name varchar(255) not null, \
                                               channel_status varchar(10) not null \
-                                            )')
+                                            )'.format(table_name))
         except Exception as e:
             raise StoreException('error creating table')

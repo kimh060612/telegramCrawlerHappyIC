@@ -1,10 +1,7 @@
 import argparse
 import configparser
-import json
 from telegramConnection import getTelegramClient
-from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty
-import json
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')

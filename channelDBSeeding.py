@@ -1,5 +1,10 @@
 import configparser
+import argparse
 from mysql.channelRepository import ChannelRepository
+
+parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
+parser.add_argument('--table', required=True, default="channels" ,help='Table name for telegram channel list')
+args = parser.parse_args()
 
 if __name__ == "__main__":
     config = configparser.ConfigParser()
@@ -16,4 +21,4 @@ if __name__ == "__main__":
                            username=db_username,
                            password=db_password,
                            db=db_database) as cRepository:
-        cRepository.migrateChannel()
+        cRepository.migrateChannel(args.table)
