@@ -11,7 +11,6 @@ if __name__ == "__main__":
     db_port = config['MySQLConfig']['port']
     db_database = config['MySQLConfig']['database']
     
-    print(db_password)
     with ChannelRepository(host=db_host, 
                            port=db_port, 
                            username=db_username,

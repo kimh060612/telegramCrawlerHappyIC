@@ -1,21 +1,14 @@
-import configparser
-import json
 import argparse
-import uuid
-import asyncio
-import pandas as pd
-
-from mysql.channelRepository import ChannelRepository
+import configparser
 from telegramConnection import getTelegramClient
-
-from telethon.tl.functions.messages import (GetHistoryRequest)
-from telethon.tl.types import (
-    PeerChannel
-)
+from telethon.tl.functions.messages import GetHistoryRequest, GetDialogsRequest
+from telethon.tl.types import PeerChannel, InputPeerEmpty
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
 args = parser.parse_args()
+
+
 
 if __name__ == "__main__":
     account = args.account
@@ -30,22 +23,13 @@ if __name__ == "__main__":
     phone = config[account]['phone']
     username = config[account]['username']
     
-    # Save file 
-    file_directory_1 = config['FileDirectory']['first_directory']
-    file_directory_2 = config['FileDirectory']['second_directory']
-    
-    # Crawler Channel Configuration
-    db_username = config['MySQLConfig']['username']
-    db_password = config['MySQLConfig']['password']
-    db_host = config['MySQLConfig']['host']
-    db_port = config['MySQLConfig']['port']
-    db_database = config['MySQLConfig']['database']
-    #### 
-    
     t_client = getTelegramClient(api_id, api_hash, username, phone)
-
-    
-    
-
-
+    channels = t_client(GetDialogsRequest(
+        offset_date=None,
+        offset_id=0,
+        offset_peer=InputPeerEmpty(),
+        limit=100,
+        hash=0
+    ))
+    print(channels.chats)
     

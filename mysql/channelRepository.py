@@ -6,11 +6,22 @@ class ChannelRepository(AbstractRepository):
         super().__init__(host, port, username, password, db)
     
     def getChannelList(self):
-        
-        pass
+        try:
+            c = self.conn.cursor()
+            c.execute('SELECT * FROM channels WHERE channel_status="Y"')
+        except Exception as e:
+            raise StoreException('error reading channel')
     
     def insertChannel(self, channel: ChannelEntity):
-        pass
+        try:
+            c = self.conn.cursor()
+            c.execute('INSERT INTO channels(channel_id, channel_name, channel_status) VALUES({}, {}, {})'.format(
+                channel.channel_id,
+                channel.channel_name,
+                channel.channel_status
+            ))
+        except Exception as e:
+            raise StoreException('error inserting channel')
     
     def migrateChannel(self):
         try:
