@@ -1,9 +1,9 @@
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
 
-def getTelegramClient(api_id, api_hash, username, phone):
+async def getTelegramClient(api_id, api_hash, username, phone):
     client = TelegramClient(username, api_id, api_hash)
-    client.start()
+    await client.start()
     print("Client Created")
     # Ensure you're authorized
     if not client.is_user_authorized():

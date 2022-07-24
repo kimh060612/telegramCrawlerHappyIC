@@ -22,7 +22,7 @@ async def main():
     phone = config[account]['phone']
     username = config[account]['username']
     
-    t_client = getTelegramClient(api_id, api_hash, username, phone)
+    t_client = await getTelegramClient(api_id, api_hash, username, phone)
     channels = await t_client(GetDialogsRequest(
         offset_date=None,
         offset_id=0,
