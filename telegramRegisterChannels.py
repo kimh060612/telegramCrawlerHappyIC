@@ -29,14 +29,11 @@ API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig()
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 async def main():
-    channels = await client(GetDialogsRequest(
-        offset_date=None,
-        offset_id=0,
-        offset_peer=InputPeerEmpty(),
-        limit=100,
-        hash=0
-    ))
-    async for entity in channels.iter_dialogs():
+    async for entity in client.iter_dialogs(offset_date=None,
+                                            offset_id=0,
+                                            offset_peer=InputPeerEmpty(),
+                                            limit=100,
+                                            hash=0):
         print('{:>14}: {}'.format(entity.id, entity.title))
 
 if __name__ == "__main__":
