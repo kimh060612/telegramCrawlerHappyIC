@@ -32,8 +32,7 @@ async def main():
     async for entity in client.iter_dialogs(offset_date=None,
                                             offset_id=0,
                                             offset_peer=InputPeerEmpty(),
-                                            limit=100,
-                                            hash=0):
+                                            limit=100):
         print('{:>14}: {}'.format(entity.id, entity.title))
 
 if __name__ == "__main__":
