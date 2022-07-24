@@ -1,6 +1,5 @@
 import argparse
 import configparser
-import asyncio
 from telegramConnection import getTelegramClient
 from telethon.tl.functions.messages import GetHistoryRequest, GetDialogsRequest
 from telethon.tl.types import PeerChannel, InputPeerEmpty
@@ -9,7 +8,7 @@ parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for Happ
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
 args = parser.parse_args()
 
-async def main():
+def getTelegramConfig():
     account = args.account
     config = configparser.ConfigParser()
     config.read('./config.ini')
@@ -22,8 +21,13 @@ async def main():
     phone = config[account]['phone']
     username = config[account]['username']
     
-    t_client = await getTelegramClient(api_id, api_hash, username, phone)
-    channels = await t_client(GetDialogsRequest(
+    return api_id, api_hash, phone, username
+
+API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig()
+client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
+
+async def main():
+    channels = await client(GetDialogsRequest(
         offset_date=None,
         offset_id=0,
         offset_peer=InputPeerEmpty(),
@@ -33,6 +37,5 @@ async def main():
     print(channels)
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-    loop.close()
+    client.loop.run_until_complete(main())
+    
