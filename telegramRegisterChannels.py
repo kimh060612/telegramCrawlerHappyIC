@@ -36,7 +36,8 @@ async def main():
         limit=100,
         hash=0
     ))
-    print(json.dumps(channels, indent=4))
+    for entity in channels:
+        print(json.dumps(entity, indent=4))
 
 if __name__ == "__main__":
     client.loop.run_until_complete(main())
