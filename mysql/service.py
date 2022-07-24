@@ -18,7 +18,7 @@ class StoreException(Exception):
 class AbstractRepository:
     def __init__(self, host, port, username, password, db):
         try:
-            self.conn = getMySQLClient(host, port, username, password, db)
+            self.conn = getMySQLClient(host, int(port), username, password, db)
         except Exception as e:
             raise StoreException(*e.args, **e.kwargs)
         self._complete = False
