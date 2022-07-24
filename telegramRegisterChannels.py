@@ -1,7 +1,7 @@
 import argparse
 import configparser
 from telegramConnection import getTelegramClient
-from telethon.tl.functions.messages import GetHistoryRequest, GetDialogsRequest
+from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import PeerChannel, InputPeerEmpty
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
@@ -21,7 +21,7 @@ def getTelegramConfig():
     phone = config[account]['phone']
     username = config[account]['username']
     
-    return api_id, api_hash, phone, username
+    return api_id, api_hash, username, phone
 
 API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig()
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
