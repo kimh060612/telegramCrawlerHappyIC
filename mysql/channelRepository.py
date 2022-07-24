@@ -15,9 +15,8 @@ class ChannelRepository(AbstractRepository):
     def migrateChannel(self):
         try:
             c = self.conn.cursor()
-            c.execute('CREATE TABLE channels(   \
-                                              channel_id varchar(100) not null  \
-                                              channel_name varchar(255) not null \
+            c.execute('CREATE TABLE channels( channel_id varchar(100) not null primary key, \
+                                              channel_name varchar(255) not null, \
                                               channel_status varchar(10) not null \
                                             )')
         except Exception as e:
