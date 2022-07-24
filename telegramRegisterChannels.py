@@ -55,6 +55,7 @@ async def main():
                 print('{:>14}: {} save success!'.format(entity.id, entity.title))
             except:
                 print('{:>14}: {} save failed!'.format(entity.id, entity.title))
+        cRepository.complete()
 
 if __name__ == "__main__":
     client.loop.run_until_complete(main())
