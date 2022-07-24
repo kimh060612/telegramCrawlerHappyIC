@@ -36,8 +36,8 @@ async def main():
         limit=100,
         hash=0
     ))
-    for entity in channels:
-        print(json.dumps(entity, indent=4))
+    async for entity in channels.iter_dialogs():
+        print('{:>14}: {}'.format(entity.id, entity.title))
 
 if __name__ == "__main__":
     client.loop.run_until_complete(main())
