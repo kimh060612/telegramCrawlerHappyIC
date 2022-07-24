@@ -30,7 +30,7 @@ async def main():
         limit=100,
         hash=0
     ))
-    print(channels.chats)
+    print(channels)
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()

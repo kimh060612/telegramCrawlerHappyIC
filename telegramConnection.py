@@ -8,9 +8,9 @@ async def getTelegramClient(api_id, api_hash, username, phone):
     # Ensure you're authorized
     isAuthenticated = await client.is_user_authorized()
     if not isAuthenticated:
-        await client.send_code_request(phone)
+        client.send_code_request(phone)
         try:
-            await client.sign_in(phone, input('Enter the code: '))
+            client.sign_in(phone, input('Enter the code: '))
         except SessionPasswordNeededError:
-            await client.sign_in(password=input('Password: '))
+            client.sign_in(password=input('Password: '))
     return client
