@@ -2,7 +2,8 @@ import argparse
 import configparser
 from telegramConnection import getTelegramClient
 from telethon.tl.functions.messages import GetDialogsRequest
-from telethon.tl.types import PeerChannel, InputPeerEmpty
+from telethon.tl.types import InputPeerEmpty
+from pprint import pprint
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
@@ -34,7 +35,7 @@ async def main():
         limit=100,
         hash=0
     ))
-    print(channels)
+    pprint(channels)
 
 if __name__ == "__main__":
     client.loop.run_until_complete(main())
