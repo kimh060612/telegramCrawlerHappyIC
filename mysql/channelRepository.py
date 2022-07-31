@@ -1,3 +1,4 @@
+import string
 from .service import AbstractRepository, StoreException
 from .channelEntity import ChannelEntity
 
@@ -12,10 +13,11 @@ class ChannelRepository(AbstractRepository):
         except Exception as e:
             raise StoreException('error reading channel')
     
-    def insertChannel(self, channel: ChannelEntity):
+    def insertChannel(self, channel: ChannelEntity, table: string):
         try:
             c = self.conn.cursor()
-            c.execute('INSERT INTO channels(channel_id, channel_name, channel_status) VALUES("{}", "{}", "{}")'.format(
+            c.execute('INSERT INTO {}(channel_id, channel_name, channel_status) VALUES("{}", "{}", "{}")'.format(
+                table,
                 channel.channel_id,
                 channel.channel_name,
                 channel.channel_status

@@ -41,6 +41,7 @@ API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig()
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 async def main():
+    table = args.table
     db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
     with ChannelRepository(host=db_host, 
                            port=db_port, 
@@ -51,7 +52,7 @@ async def main():
                                                 offset_id=0,
                                                 offset_peer=InputPeerEmpty()):
             try:
-                cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "Y"))
+                cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "Y"), table)
                 print('{:>14}: {} save success!'.format(entity.id, entity.title))
             except:
                 print('{:>14}: {} save failed!'.format(entity.id, entity.title))
