@@ -35,7 +35,7 @@ async def main():
                            db=db_database) as cRepository:
         channelList = cRepository.getChannelList(table=table)
         print(channelList)
-        for channel_id, channel_name in channelList:
+        for channel_id, channel_name, _ in channelList:
             print('----------------------{}-----------------------'.format(channel_name))
             real_id, _ = utils.resolve_id(channel_id)
             full = await client(functions.channels.GetFullChannelRequest(PeerChannel(real_id)))
