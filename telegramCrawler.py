@@ -37,7 +37,7 @@ async def main():
         print(channelList)
         for channel_id, channel_name, _ in channelList:
             print('----------------------{}-----------------------'.format(channel_name))
-            real_id, _ = utils.resolve_id(channel_id)
+            real_id, _ = utils.resolve_id(int(channel_id))
             full = await client(functions.channels.GetFullChannelRequest(PeerChannel(real_id)))
             full_channel = full.full_chat
             if full_channel.migrated_from_chat_id:
