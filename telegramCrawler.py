@@ -35,17 +35,12 @@ async def main():
                            db=db_database) as cRepository:
         channelList = cRepository.getChannelList(table=table)
         print(channelList)
+            
         for channel_id, channel_name, _ in channelList:
             print('----------------------{}-----------------------'.format(channel_name))
             real_id, _ = utils.resolve_id(int(channel_id))
-            full = await client(functions.channels.GetFullChannelRequest(PeerChannel(real_id)))
-            full_channel = full.full_chat
-            if full_channel.migrated_from_chat_id:
-                migrated_from_chat = next(c for c in full.chats if c.id == full_channel.migrated_from_chat_id)
-                print(migrated_from_chat.title)
-            if full_channel.linked_chat_id:
-                linked_group = next(c for c in full.chats if c.id == full_channel.linked_chat_id)
-                print(linked_group.username)
+            async for message in client.iter_messages(PeerChannel(real_id)):
+                print(message.id, message.text)
             print('----------------------{}-----------------------'.format('-' * len(channel_name)))
         
 
