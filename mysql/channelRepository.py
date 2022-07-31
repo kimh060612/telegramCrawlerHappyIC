@@ -6,10 +6,11 @@ class ChannelRepository(AbstractRepository):
     def __init__(self, host, port, username, password, db):
         super().__init__(host, port, username, password, db)
     
-    def getChannelList(self):
+    def getChannelList(self, table: string):
         try:
             c = self.conn.cursor()
-            c.execute('SELECT * FROM channels WHERE channel_status="Y"')
+            c.execute('SELECT * FROM {} WHERE channel_status="Y"'.format(table))
+            return c.fetchall()
         except Exception as e:
             raise StoreException('error reading channel')
     
