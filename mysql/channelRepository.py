@@ -1,4 +1,3 @@
-import string
 from .service import AbstractRepository, StoreException
 from .channelEntity import ChannelEntity
 
@@ -6,7 +5,15 @@ class ChannelRepository(AbstractRepository):
     def __init__(self, host, port, username, password, db):
         super().__init__(host, port, username, password, db)
     
-    def getChannelList(self, table: string):
+    def getChannelList(self, table: str):
+        try:
+            c = self.conn.cursor()
+            c.execute('SELECT * FROM {}'.format(table))
+            return c.fetchall()
+        except Exception as e:
+            raise StoreException('error reading channel')
+    
+    def getChannelWhiteList(self, table: str):
         try:
             c = self.conn.cursor()
             c.execute('SELECT * FROM {} WHERE channel_status="Y"'.format(table))
@@ -14,7 +21,7 @@ class ChannelRepository(AbstractRepository):
         except Exception as e:
             raise StoreException('error reading channel')
     
-    def insertChannel(self, channel: ChannelEntity, table: string):
+    def insertChannel(self, channel: ChannelEntity, table: str):
         try:
             c = self.conn.cursor()
             c.execute('INSERT INTO {}(channel_id, channel_name, channel_status) VALUES("{}", "{}", "{}")'.format(
@@ -25,6 +32,14 @@ class ChannelRepository(AbstractRepository):
             ))
         except Exception as e:
             raise StoreException('error inserting channel')
+    
+    def updateChannel(self, table: str, uuid: str, status: bool):
+        try:
+            c = self.conn.cursor()
+            statusCode = "Y" if status else "N"
+            c.execute('UPDATE {} SET channel_status="{}" WHERE channel_id="{}"'.format(table, statusCode, uuid))
+        except Exception as e:
+            raise StoreException('error updating channel')
     
     def migrateChannel(self, table_name):
         try:
