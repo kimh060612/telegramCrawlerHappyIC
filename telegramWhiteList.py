@@ -110,5 +110,6 @@ if __name__ == "__main__":
                 print("Command not exists")
         except KeyboardInterrupt:
             print("Quit")
+            break
     
     
