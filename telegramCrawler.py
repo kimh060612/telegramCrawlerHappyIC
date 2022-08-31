@@ -33,7 +33,7 @@ async def main():
                            username=db_username,
                            password=db_password,
                            db=db_database) as cRepository:
-        channelList = cRepository.getChannelList(table=table)
+        channelList = cRepository.getChannelWhiteList(table=table)
         print(channelList)
             
         for channel_id, channel_name, _ in channelList:
