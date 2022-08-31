@@ -50,7 +50,7 @@ def printChannelList(whitelist: bool):
             "status": channelStatus
         }
         df = pd.DataFrame(data)
-        print(df)
+        print(df.to_markdown())
 
 def updateWhitelist(uuid: str, status: bool):
     table = args.table
