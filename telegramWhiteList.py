@@ -12,7 +12,6 @@ parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for Happ
 parser.add_argument('--table', required=True, default="channels" ,help='Table name for telegram channel list')
 args = parser.parse_args()
 
-account = args.account
 db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
 
 def printHelp():
