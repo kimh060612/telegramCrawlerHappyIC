@@ -8,6 +8,7 @@ from telethon import functions
 from telethon import utils
 from telethon.tl.functions.messages import GetHistoryRequest
 from telethon.tl.types import PeerChat, PeerChannel
+import pprint 
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
@@ -25,6 +26,8 @@ config.read('./config.ini')
 file_directory_1 = config['FileDirectory']['first_directory']
 file_directory_2 = config['FileDirectory']['second_directory']
 
+pp = pprint.PrettyPrinter(indent=4)
+
 async def main():
     table = args.table
     db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
@@ -40,7 +43,9 @@ async def main():
             print('----------------------{}-----------------------'.format(channel_name))
             real_id, _ = utils.resolve_id(int(channel_id))
             async for message in client.iter_messages(PeerChannel(real_id), limit=30):
-                print(message.to_dict())
+                msg = message.to_dict()
+                pp.pprint(msg)
+                print("\n")
             print('----------------------{}-----------------------'.format('-' * len(channel_name)))
         
 
