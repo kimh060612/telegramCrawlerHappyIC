@@ -40,8 +40,7 @@ async def main():
             print('----------------------{}-----------------------'.format(channel_name))
             real_id, _ = utils.resolve_id(int(channel_id))
             async for message in client.iter_messages(PeerChannel(real_id), limit=30):
-                print(message.id, message.chat.title, message.text)
-                print()
+                print(message.to_dict())
             print('----------------------{}-----------------------'.format('-' * len(channel_name)))
         
 
