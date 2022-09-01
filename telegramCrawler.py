@@ -35,11 +35,11 @@ async def main():
                            db=db_database) as cRepository:
         channelList = cRepository.getChannelWhiteList(table=table)
         print(channelList)
-            
+        
         for channel_id, channel_name, _ in channelList:
             print('----------------------{}-----------------------'.format(channel_name))
             real_id, _ = utils.resolve_id(int(channel_id))
-            async for message in client.iter_messages(PeerChannel(real_id)):
+            async for message in client.iter_messages(PeerChannel(real_id), limit=30):
                 print(message.id, message.text)
             print('----------------------{}-----------------------'.format('-' * len(channel_name)))
         
