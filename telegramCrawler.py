@@ -3,10 +3,7 @@ import argparse
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
 from DBConfig import getDatabaseConfig
-from telethon import functions
-from telethon import utils
-from telethon.tl.functions.messages import GetHistoryRequest
-from telethon.tl.types import PeerChat, PeerChannel
+from telethon.tl.types import PeerChannel
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
