@@ -9,7 +9,7 @@ from telethon.tl.types import PeerChannel
 from elasticsearch import Elasticsearch
 import json
 
-es = Elasticsearch('http://localhost:9200')
+es = Elasticsearch('http://localhost:9200', basic_auth=('elastic', 'H@ppYiCP@sswD9!*2'))
 print(es.info())
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
