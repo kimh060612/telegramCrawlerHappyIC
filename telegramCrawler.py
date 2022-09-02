@@ -1,6 +1,5 @@
 import configparser
 import argparse
-from pydoc import cli
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
 from DBConfig import getDatabaseConfig
@@ -31,7 +30,7 @@ def findChannelId(channel, channelList):
             return channel_id
     return False
 
-async def telegramCrawler(channel: str):
+async def telegramCrawler(channel: str, limit=100):
     table = args.table
     db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
     with ChannelRepository(host=db_host, 
@@ -46,9 +45,15 @@ async def telegramCrawler(channel: str):
             raise ValueError("Invalid Channel")
         
         print('----------------------{}-----------------------'.format(channel))
-        real_id, _ = utils.resolve_id(int(channel_id))
-        async for message in client.iter_messages(PeerChannel(real_id), limit=30):
-            print(message.to_dict())
+        async for message in client.iter_messages(PeerChannel(int(channel_id)), limit=limit):
+            msg = message.to_dict()
+            print(msg["id"], msg["date"], msg["message"])
+            if not msg["fwd_from"] is None:
+                print(msg["forwards"], msg["fwd_from"]["date"], msg["fwd_from"]["from_id"]["channel_id"]) # forwards: number that original msg is forwarded to another channels
+                channel_forward = PeerChannel(int(msg["fwd_from"]["from_id"]["channel_id"]))
+                msg_forward = await client.get_messages(channel_forward, ids=msg["fwd_from"]["channel_post"])
+                print(msg_forward)
+            
         print('----------------------{}-----------------------'.format('-' * len(channel)))
 
     

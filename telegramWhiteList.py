@@ -6,6 +6,7 @@ from DBConfig import getDatabaseConfig
 from telegramConnection import getTelegramClient, getTelegramConfig
 from telethon.tl.types import InputPeerEmpty
 from telethon.client import TelegramClient
+from telethon import utils
 import pandas as pd
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
@@ -74,10 +75,11 @@ async def updateChannels(_client: TelegramClient):
                                                 offset_id=0,
                                                 offset_peer=InputPeerEmpty()):
             try:
-                cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "N"), table)
-                print('{:>14}: {} save success!'.format(entity.id, entity.title))
+                real_id, _ = utils.resolve_id(int(entity.id))
+                cRepository.insertChannel(ChannelEntity(entity.title, real_id, "N"), table)
+                print('{:>14}: {} save success!'.format(real_id, entity.title))
             except:
-                print('{:>14}: {} save failed!'.format(entity.id, entity.title))
+                print('{:>14}: {} save failed!'.format(real_id, entity.title))
         cRepository.complete()
 
 if __name__ == "__main__":

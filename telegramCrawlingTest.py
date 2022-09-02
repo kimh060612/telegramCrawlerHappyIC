@@ -1,5 +1,6 @@
 import configparser
 import argparse
+from datetime import date
 from pydoc import cli
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
@@ -41,10 +42,17 @@ async def main():
         
         for channel_id, channel_name, _ in channelList:
             print('----------------------{}-----------------------'.format(channel_name))
-            real_id, _ = utils.resolve_id(int(channel_id))
-            async for message in client.iter_messages(PeerChannel(real_id), limit=30):
+            # real_id, _ = utils.resolve_id(int(channel_id))
+            # print(real_id)
+            async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=date.today(), limit=300, reverse=True):
                 msg = message.to_dict()
-                pp.pprint(msg)
+                print(msg["id"], msg["date"], msg["message"], msg["mentioned"])
+                if not msg["fwd_from"] is None:
+                    print(msg["forwards"], msg["fwd_from"]["date"], msg["fwd_from"]["from_id"]["channel_id"]) # forwards: number that original msg is forwarded to another channels
+                    channel_forward = PeerChannel(int(msg["fwd_from"]["from_id"]["channel_id"]))
+                    msg_forward = await client.get_messages(channel_forward, ids=msg["fwd_from"]["channel_post"])
+                    pp.pprint(msg_forward.to_dict())
+                # pp.pprint(msg)
                 print("\n")
             print('----------------------{}-----------------------'.format('-' * len(channel_name)))
         

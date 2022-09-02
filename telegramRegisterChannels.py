@@ -4,6 +4,7 @@ from mysql.channelEntity import ChannelEntity
 from telegramConnection import getTelegramClient, getTelegramConfig
 from DBConfig import getDatabaseConfig
 from telethon.tl.types import InputPeerEmpty
+from telethon import utils
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
@@ -26,7 +27,8 @@ async def main():
                                                 offset_id=0,
                                                 offset_peer=InputPeerEmpty()):
             try:
-                cRepository.insertChannel(ChannelEntity(entity.title, entity.id, "N"), table)
+                real_id, _ = utils.resolve_id(int(entity.id))
+                cRepository.insertChannel(ChannelEntity(entity.title, real_id, "N"), table)
                 print('{:>14}: {} save success!'.format(entity.id, entity.title))
             except:
                 print('{:>14}: {} save failed!'.format(entity.id, entity.title))
