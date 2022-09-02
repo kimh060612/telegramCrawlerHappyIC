@@ -60,7 +60,7 @@ async def main():
                     elastic_msg["fwd_msg_id"] = msg["fwd_from"]["channel_post"]
                     elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
                 print(json.dumps(elastic_msg, indent=4))
-                res = es.index(index='telegram', doc_type="_doc", document=elastic_msg)
+                res = es.index(index='telegram', document=elastic_msg)
                 print(res)
                 print("\n")
                 
