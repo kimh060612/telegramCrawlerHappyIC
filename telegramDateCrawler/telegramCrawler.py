@@ -24,7 +24,7 @@ API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account, os.path.abspath('
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 async def telegramCrawler(channel_id: str, from_date: str, limit=3000):    
-    async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=date.fromisoformat(from_date), limit=limit):
+    async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=from_date, limit=limit):
         msg = message.to_dict()
         # print(msg["id"], msg["date"], msg["message"])
         elastic_msg = {
@@ -69,7 +69,6 @@ if __name__ == "__main__":
         channelList = cRepository.getChannelWhiteList(table=table)
         for channel_id, channel_name, _ in channelList:
             for _date in daterange(sdate, edate):
-                print(_date)
-                client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_date.strftime('%Y-%m-%d')))
+                client.loop.run_in_executor(telegramCrawler(channel_id=channel_id, from_date=_date))
 
     
