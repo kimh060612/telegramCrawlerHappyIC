@@ -1,7 +1,6 @@
 import configparser
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
-import os
 
 def getTelegramClient(api_id, api_hash, username, phone):
     client = TelegramClient(username, api_id, api_hash)

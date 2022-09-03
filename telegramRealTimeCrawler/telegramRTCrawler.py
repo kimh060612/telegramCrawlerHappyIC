@@ -9,16 +9,18 @@ from telethon.tl.types import PeerChannel
 from telegramConnection import getTelegramClient, getTelegramConfig
 from DBConfig import getDatabaseConfig
 
+es = Elasticsearch('http://localhost:9200', basic_auth=('elastic', 'H@ppYiCP@sswD9!*2'))
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
-parser.add_argument('--table', required=True, default="channels" ,help='Table name for telegram channel list')
+parser.add_argument('--channel_id', required=True, help='Channel ID for New Message')
 args = parser.parse_args()
 
 account = args.account
+channel_id = args.channel_id
 API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account, os.path.abspath('../config.ini'))
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
-@client.on(events.NewMessage())
+@client.on(events.NewMessage(chats=[channel_id]))
 async def newMessageListener(event):
     newMessage = event.message.message
     print(newMessage)
