@@ -16,7 +16,8 @@ parser.add_argument('--channel_id', required=True, help='Channel ID for New Mess
 args = parser.parse_args()
 
 account = args.account
-channel_id = PeerChannel(int(args.channel_id))
+channel_id = PeerChannel(int(args.channel_id)).channel_id
+print(channel_id)
 API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account, os.path.abspath('../config.ini'))
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
