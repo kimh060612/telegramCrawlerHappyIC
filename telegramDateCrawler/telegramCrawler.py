@@ -4,7 +4,7 @@ sys.path.append(os.path.abspath('../mysql'))
 sys.path.append(os.path.abspath('../'))
 import configparser
 import argparse
-from datetime import date, timedelta, tzinfo
+from datetime import date, datetime, timedelta, tzinfo
 import json
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
@@ -26,7 +26,7 @@ async def telegramCrawler(channel_id: str, sdate: date, edate: date, limit=300):
     async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=sdate, limit=limit, reverse=True):
         msg = message.to_dict()
         # print(msg["id"], msg["date"], msg["message"])
-        if msg["date"] >= edate:
+        if msg["date"] >= datetime.date(edate):
             break
         elastic_msg = {
             "id": str(msg["id"]),
