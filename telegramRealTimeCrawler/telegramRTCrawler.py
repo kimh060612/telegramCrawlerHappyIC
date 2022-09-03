@@ -22,7 +22,7 @@ client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 @client.on(events.NewMessage(chats=Channel))
 async def newMessageListener(event):
-    newMessage = event.message.message
+    newMessage = event.message
     print(newMessage)
     
 if __name__ == "__main__":
