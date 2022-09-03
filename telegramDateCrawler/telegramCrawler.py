@@ -2,9 +2,9 @@ import configparser
 import argparse
 from datetime import date, timedelta
 import json
-from ..mysql.channelRepository import ChannelRepository
-from ..telegramConnection import getTelegramClient, getTelegramConfig
-from ..DBConfig import getDatabaseConfig
+from mysql.channelRepository import ChannelRepository
+from telegramConnection import getTelegramClient, getTelegramConfig
+from DBConfig import getDatabaseConfig
 from telethon.tl.types import PeerChannel
 from elasticsearch import Elasticsearch
 
