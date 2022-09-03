@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath('../mysql'))
 sys.path.append(os.path.abspath('../'))
 import configparser
 import argparse
-from datetime import date, timedelta
+from datetime import date, timedelta, tzinfo
 import json
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
@@ -23,7 +23,7 @@ account = args.account
 API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account, os.path.abspath('../config.ini'))
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
-async def telegramCrawler(channel_id: str, from_date: str, limit=3000):    
+async def telegramCrawler(channel_id: str, from_date: date, limit=300):    
     async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=from_date, limit=limit):
         msg = message.to_dict()
         # print(msg["id"], msg["date"], msg["message"])
@@ -31,19 +31,19 @@ async def telegramCrawler(channel_id: str, from_date: str, limit=3000):
             "id": str(msg["id"]),
             "date": msg["date"].strftime('%Y-%m-%d %H:%M'),
             "content": msg["message"],
-            "mentioned": msg["mentioned"]
+            "mentioned": msg["mentioned"],
+            "forwards": msg["forwards"]
         }
         if not msg["fwd_from"] is None:
             try :
-                elastic_msg["forwards"] = msg["forwards"]
                 elastic_msg["fwd_msg_channel"] = str(msg["fwd_from"]["from_id"]["channel_id"])
                 elastic_msg["fwd_msg_id"] = str(msg["fwd_from"]["channel_post"])
                 elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
             except :
+                print(msg)
                 continue
         print(json.dumps(elastic_msg, indent=4))
-        res = es.index(index='telegram', document=elastic_msg)
-        print(res)
+        _ = es.index(index='telegram', document=elastic_msg)
         print("\n")
 
 def daterange(start: date, end: date):
