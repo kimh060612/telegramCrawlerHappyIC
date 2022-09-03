@@ -5,6 +5,7 @@ from telegramConnection import getTelegramClient, getTelegramConfig
 from DBConfig import getDatabaseConfig
 from telethon.tl.types import InputPeerEmpty
 from telethon import utils
+import os
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
@@ -17,7 +18,7 @@ client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 async def main():
     table = args.table
-    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
+    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig(os.path.abspath('../config.ini'))
     with ChannelRepository(host=db_host, 
                            port=db_port, 
                            username=db_username,
