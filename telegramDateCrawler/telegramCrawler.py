@@ -46,6 +46,10 @@ async def telegramCrawler(channel_id: str, from_date: str, limit=3000):
         print(res)
         print("\n")
 
+def daterange(start: date, end: date):
+    for n in range(int((end - start).days)):
+        yield start + timedelta(n)
+
 if __name__ == "__main__":
     print("########################### Telegram Offline Crawler ############################")
     print("############ Caution! This Crawler does not contain the photo savings ############")
@@ -54,7 +58,6 @@ if __name__ == "__main__":
     e = input("Crawling End Date (ISO Format: YYYY-MM-DD) > ")
     sdate = date.fromisoformat(s)
     edate = date.fromisoformat(e)
-    day_diff = int((edate - sdate).days)
     
     table = args.table
     db_username, db_password, db_host, db_port, db_database = getDatabaseConfig(os.path.abspath('../config.ini'))
@@ -65,9 +68,7 @@ if __name__ == "__main__":
                            db=db_database) as cRepository:
         channelList = cRepository.getChannelWhiteList(table=table)
         for channel_id, channel_name, _ in channelList:
-            for i in range(day_diff):
-                _now = sdate + timedelta(i)
-                print(_now.strftime('%Y-%m-%d'))
-                client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_now.strftime('%Y-%m-%d')))
+            for _date in daterange(sdate, edate):
+                client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_date.strftime('%Y-%m-%d')))
 
     
