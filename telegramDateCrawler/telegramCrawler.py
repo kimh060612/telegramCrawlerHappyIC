@@ -63,6 +63,6 @@ if __name__ == "__main__":
         for channel_id, channel_name, _ in channelList:
             for i in range(day_diff):
                 _now = sdate + timedelta(i)
-                client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_now))
+                client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_now.strftime('%Y-%m-%d')))
 
     
