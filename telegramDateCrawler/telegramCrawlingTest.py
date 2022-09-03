@@ -1,4 +1,3 @@
-import configparser
 import argparse
 from datetime import date
 from pydoc import doc
