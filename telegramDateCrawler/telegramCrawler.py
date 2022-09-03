@@ -69,6 +69,7 @@ if __name__ == "__main__":
         channelList = cRepository.getChannelWhiteList(table=table)
         for channel_id, channel_name, _ in channelList:
             for _date in daterange(sdate, edate):
+                print(_date)
                 client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_date.strftime('%Y-%m-%d')))
 
     
