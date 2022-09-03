@@ -1,5 +1,6 @@
 import sys
 import os
+from time import timezone
 sys.path.append(os.path.abspath('../mysql'))
 sys.path.append(os.path.abspath('../'))
 import configparser
@@ -33,10 +34,13 @@ async def telegramCrawler(channel_id: str, from_date: str, limit=3000):
             "mentioned": msg["mentioned"]
         }
         if not msg["fwd_from"] is None:
-            elastic_msg["forwards"] = msg["forwards"]
-            elastic_msg["fwd_msg_channel"] = str(msg["fwd_from"]["from_id"]["channel_id"])
-            elastic_msg["fwd_msg_id"] = str(msg["fwd_from"]["channel_post"])
-            elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
+            try :
+                elastic_msg["forwards"] = msg["forwards"]
+                elastic_msg["fwd_msg_channel"] = str(msg["fwd_from"]["from_id"]["channel_id"])
+                elastic_msg["fwd_msg_id"] = str(msg["fwd_from"]["channel_post"])
+                elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
+            except :
+                continue
         print(json.dumps(elastic_msg, indent=4))
         res = es.index(index='telegram', document=elastic_msg)
         print(res)
@@ -63,6 +67,7 @@ if __name__ == "__main__":
         for channel_id, channel_name, _ in channelList:
             for i in range(day_diff):
                 _now = sdate + timedelta(i)
+                print(_now.strftime('%Y-%m-%d'))
                 client.loop.run_until_complete(telegramCrawler(channel_id=channel_id, from_date=_now.strftime('%Y-%m-%d')))
 
     
