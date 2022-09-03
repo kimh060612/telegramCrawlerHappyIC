@@ -1,5 +1,7 @@
 import sys
-sys.path.append('../mysql')
+import os
+sys.path.append(os.path.abspath('../mysql'))
+sys.path.append(os.path.abspath('../'))
 import configparser
 import argparse
 from datetime import date, timedelta
