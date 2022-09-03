@@ -21,7 +21,7 @@ API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account)
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 config = configparser.ConfigParser()
-config.read('./config.ini')
+config.read('../config.ini')
 
 # Directory for saving files
 file_directory_1 = config['FileDirectory']['first_directory']
