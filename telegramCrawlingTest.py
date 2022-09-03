@@ -46,7 +46,7 @@ async def main():
                 msg = message.to_dict()
                 # print(msg["id"], msg["date"], msg["message"], msg["mentioned"])
                 elastic_msg = {
-                    "id": msg["id"],
+                    "id": str(msg["id"]),
                     "date": msg["date"].strftime('%Y-%m-%d %H:%M'),
                     "content": msg["message"],
                     "mentioned": msg["mentioned"]
@@ -56,8 +56,8 @@ async def main():
                     # channel_forward = PeerChannel(int(msg["fwd_from"]["from_id"]["channel_id"]))
                     # msg_forward = await client.get_messages(channel_forward, ids=msg["fwd_from"]["channel_post"])
                     elastic_msg["forwards"] = msg["forwards"]
-                    elastic_msg["fwd_msg_channel"] = msg["fwd_from"]["from_id"]["channel_id"]
-                    elastic_msg["fwd_msg_id"] = msg["fwd_from"]["channel_post"]
+                    elastic_msg["fwd_msg_channel"] = str(msg["fwd_from"]["from_id"]["channel_id"])
+                    elastic_msg["fwd_msg_id"] = str(msg["fwd_from"]["channel_post"])
                     elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
                 print(json.dumps(elastic_msg, indent=4))
                 res = es.index(index='telegram', document=elastic_msg)
