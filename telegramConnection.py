@@ -1,6 +1,7 @@
 import configparser
 from telethon import TelegramClient
 from telethon.errors import SessionPasswordNeededError
+import os
 
 def getTelegramClient(api_id, api_hash, username, phone):
     client = TelegramClient(username, api_id, api_hash)
@@ -18,7 +19,7 @@ def getTelegramClient(api_id, api_hash, username, phone):
 
 def getTelegramConfig(account):
     config = configparser.ConfigParser()
-    config.read('./config.ini')
+    config.read(os.path.abspath('./config.ini'))
 
     #### Configuration Parsing
     # Parse API Account Information
