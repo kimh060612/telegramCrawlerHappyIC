@@ -22,7 +22,7 @@ client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 async def main():
     table = args.table
-    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
+    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig(os.path.abspath('../config.ini'))
     with ChannelRepository(host=db_host, 
                            port=db_port, 
                            username=db_username,

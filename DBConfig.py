@@ -1,8 +1,8 @@
 import configparser
 
-def getDatabaseConfig():
+def getDatabaseConfig(config_path):
     config = configparser.ConfigParser()
-    config.read('./config.ini')
+    config.read(config_path)
     
     db_username = config['MySQLConfig']['username']
     db_password = config['MySQLConfig']['password']
