@@ -2,9 +2,8 @@ import sys
 import os
 sys.path.append(os.path.abspath('../mysql'))
 sys.path.append(os.path.abspath('../'))
-import configparser
 import argparse
-from datetime import date, datetime, timedelta, tzinfo
+from datetime import date, timedelta
 import json
 from mysql.channelRepository import ChannelRepository
 from telegramConnection import getTelegramClient, getTelegramConfig
