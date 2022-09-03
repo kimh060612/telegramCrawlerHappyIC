@@ -1,9 +1,13 @@
+import sys
+import os
+sys.path.append(os.path.abspath('../mysql'))
+sys.path.append(os.path.abspath('../'))
 import argparse
 from datetime import date
 from pydoc import doc
-from ..mysql.channelRepository import ChannelRepository
-from ..telegramConnection import getTelegramClient, getTelegramConfig
-from ..DBConfig import getDatabaseConfig
+from mysql.channelRepository import ChannelRepository
+from telegramConnection import getTelegramClient, getTelegramConfig
+from DBConfig import getDatabaseConfig
 from telethon.tl.types import PeerChannel
 from elasticsearch import Elasticsearch
 import json

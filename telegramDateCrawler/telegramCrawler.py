@@ -1,6 +1,5 @@
 import sys
 import os
-from time import timezone
 sys.path.append(os.path.abspath('../mysql'))
 sys.path.append(os.path.abspath('../'))
 import configparser
@@ -54,7 +53,7 @@ if __name__ == "__main__":
     print("########################### Telegram Offline Crawler ############################")
     print("############ Caution! This Crawler does not contain the photo savings ############")
     
-    s = input("Crawling Start Date (ISO Format: YYYY-MM-DD) >")
+    s = input("Crawling Start Date (ISO Format: YYYY-MM-DD) > ")
     e = input("Crawling End Date (ISO Format: YYYY-MM-DD) > ")
     sdate = date.fromisoformat(s)
     edate = date.fromisoformat(e)
