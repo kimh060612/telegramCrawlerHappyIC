@@ -17,9 +17,9 @@ def getTelegramClient(api_id, api_hash, username, phone):
             client.sign_in(password=input('Password: '))
     return client
 
-def getTelegramConfig(account):
+def getTelegramConfig(account, config_path):
     config = configparser.ConfigParser()
-    config.read(os.path.abspath('./config.ini'))
+    config.read(config_path)
 
     #### Configuration Parsing
     # Parse API Account Information

@@ -19,15 +19,8 @@ parser.add_argument('--table', required=True, default="channels" ,help='Table na
 args = parser.parse_args()
 
 account = args.account
-API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account)
+API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(account, os.path.abspath('../config.ini'))
 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
-
-config = configparser.ConfigParser()
-config.read('../config.ini')
-
-# Directory for saving files
-file_directory_1 = config['FileDirectory']['first_directory']
-file_directory_2 = config['FileDirectory']['second_directory']
 
 async def telegramCrawler(channel_id: str, from_date: str, limit=3000):    
     async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=date.fromisoformat(from_date), limit=limit):
