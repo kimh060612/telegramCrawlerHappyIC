@@ -66,7 +66,7 @@ def updateWhitelist(uuid: str, status: bool):
 
 async def updateChannels(_client: TelegramClient):
     table = args.table
-    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
+    db_username, db_password, db_host, db_port, db_database = getDatabaseConfig(os.path.abspath('./config.ini'))
     with ChannelRepository(host=db_host, 
                            port=db_port, 
                            username=db_username,
@@ -102,7 +102,7 @@ if __name__ == "__main__":
                 updateWhitelist(_id, False)
             elif com == "Update":
                 user = command.split(' ')[1]
-                API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(user)
+                API_ID, API_HASH, USERNAME, PHONE = getTelegramConfig(user, os.path.abspath('./config.ini'))
                 client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
                 client.loop.run_until_complete(updateChannels(client))
             elif com == "Activity":
