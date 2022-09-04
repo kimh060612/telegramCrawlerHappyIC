@@ -22,7 +22,7 @@ client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 
 @client.on(events.NewMessage(chats=Channel))
 async def newMessageListener(event):
-    msg = event.message
+    msg = event.message.to_dict()
     print(msg)
     elastic_msg = {
         "id": str(msg["id"]),
