@@ -24,6 +24,7 @@ client = getTelegramClient(API_ID, API_HASH, USERNAME, PHONE)
 async def telegramCrawler(channel_id: str, sdate: date, edate: date, limit=300):    
     async for message in client.iter_messages(PeerChannel(int(channel_id)), offset_date=sdate, limit=limit, reverse=True):
         msg = message.to_dict()
+        print(msg)
         # print(msg["id"], msg["date"], msg["message"])
         if date.fromisoformat(msg["date"].strftime('%Y-%m-%d')) >= edate:
             break
