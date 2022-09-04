@@ -8,12 +8,13 @@ from telethon.tl.types import InputPeerEmpty
 from telethon.client import TelegramClient
 from telethon import utils
 import pandas as pd
+import os 
 
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--table', required=True, default="channels" ,help='Table name for telegram channel list')
 args = parser.parse_args()
 
-db_username, db_password, db_host, db_port, db_database = getDatabaseConfig()
+db_username, db_password, db_host, db_port, db_database = getDatabaseConfig(os.path.abspath('./config.ini'))
 
 def printHelp():
     print("----------------------------------Help-----------------------------------")
