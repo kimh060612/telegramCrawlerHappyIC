@@ -29,3 +29,8 @@ def getTelegramConfig(account, config_path):
     username = config[account]['username']
     
     return api_id, api_hash, username, phone
+
+def getTelegramBotTowards(config_path):
+    config = configparser.ConfigParser()
+    config.read(config_path)
+    return config["TelegramBot"]["toward"]

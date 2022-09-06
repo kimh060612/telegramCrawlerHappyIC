@@ -1,5 +1,5 @@
 config.ini
 */node_modules
 +82*
-*.session
+*.session*
 *__pycache__*

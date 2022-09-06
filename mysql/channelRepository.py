@@ -29,6 +29,13 @@ class ChannelRepository(AbstractRepository):
         except Exception as e:
             raise StoreException('error reading channel')
             
+    def getChannelById(self, table: str, channel_id: str):
+        try:
+            c = self.conn.cursor()
+            c.execute('SELECT * FROM {} WHERE channel_id="{}" AND channel_status="Y"'.format(table, channel_id))
+            return c.fetchone()
+        except Exception as e:
+            raise StoreException('error reading channel')
     
     def insertChannel(self, channel: ChannelEntity, table: str):
         try:
