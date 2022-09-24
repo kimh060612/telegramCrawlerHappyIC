@@ -14,8 +14,10 @@ from telethon.tl.types import PeerChannel
 import requests
 import json
 import regex as re
+from .elasticSearchBody import body
 
 es = Elasticsearch('http://localhost:9200', basic_auth=('elastic', 'H@ppYiCP@sswD9!*2'))
+_res = es.indices.create(index="telegram_msg", body=body, include_type_name =True, ignore=[400, 404])
 parser = argparse.ArgumentParser(description="Telegram Chatting Crawler for HappyIC Project")
 parser.add_argument('--account', required=True, default="AlexYong" ,help='Which Account you want to Crawl from Telegram')
 parser.add_argument('--table', required=True, default="channels" ,help='Table name for telegram channel list')
@@ -41,12 +43,6 @@ with ChannelRepository(host=db_host,
         ChannelList.append(Channel)
 print("<-------------------------White Channel Load Complete!------------------------->")
 reqSession = requests.session()
-_Headers = {
-    "Accept": "application/json",
-    "User-Agent": "Telegram Bot SDK - (https://github.com/irazasyed/telegram-bot-sdk)",
-    "Content-Type": "application/json"
-}
-
 
 def printStatus(status):
     if status >= 400:
@@ -61,10 +57,10 @@ async def newMessageListener(event):
     print(msg)
     elastic_msg = {
         "id": str(msg["id"]),
-        "date": msg["date"].strftime('%Y-%m-%d %H:%M'),
+        "date": msg["date"],
         "content": msg["message"],
         "mentioned": msg["mentioned"],
-        "forwards": msg["forwards"]
+        "forwards": str(msg["forwards"])
     }
     sendMsgFlag = False
     if msg["fwd_from"] is None:
@@ -81,7 +77,7 @@ async def newMessageListener(event):
                         db=db_database) as cRepository:
                 _c = cRepository.getChannelById(args.table, _id)
                 if not _c:
-                    elastic_msg["fwd_msg_channel"] = _id
+                    elastic_msg["fwd_msg_channel"] = str(_id)
                     elastic_msg["fwd_msg_id"] = str(msg["fwd_from"]["channel_post"] if not msg["fwd_from"]["channel_post"] is None else -1)
                     elastic_msg["fwd_msg_date"] = msg["fwd_from"]["date"].strftime('%Y-%m-%d %H:%M')
                     print(json.dumps(elastic_msg, indent=4))
@@ -103,7 +99,7 @@ async def newMessageListener(event):
                 print("Regex {} Matched!".format(des))
                 sendMsgFlag = False
     if sendMsgFlag:
-        _ = es.index(index='telegram_all_no_dup', document=elastic_msg)
+        _ = es.index(index='telegram_msg', document=elastic_msg)
         channel_toward = await client.get_entity(_towards)
         await client.forward_messages(channel_toward, rawMsg)
     print("\n")
